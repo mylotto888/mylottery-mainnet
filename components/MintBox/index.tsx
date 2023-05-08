@@ -158,7 +158,7 @@ export default function Home() {
                         </div>
                         <div className="py-2 flex item-center">
                             <button className="btn btn-sm bg-white border-none hover:bg-gray-300">
-                                <span className="text-red-500 animate-pulse">live</span>
+                                <span className="text-red-500 animate-pulse">END</span>
                             </button>
                         </div>
                     </div>
