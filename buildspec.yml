@@ -1,0 +1,28 @@
+version: 0.2
+
+env:
+  variables:
+    WEB_APP_MINT_KEY: $WEB_APP_MINT_KEY
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - apt-get install -y curl jq unzip
+  pre_build:
+    commands:
+      - echo "Install npm dependencies"
+      - npm install
+
+  build:
+    commands:
+      - echo "Bundle app source"
+      - npm run build
+  post_build:
+    commands:
+      - echo "Removing previous bundle from S3"
+      - aws s3 rm s3://$S3_BUCKET  --recursive
+      - echo "Upload build folder to S3"
+      - aws s3 sync build/ s3://$S3_BUCKET --exclude "*.svg"
+      - aws s3 sync build/ s3://$S3_BUCKET --include "*.svg" --content-type image/svg+xml
