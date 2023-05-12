@@ -7,14 +7,13 @@ env:
 phases:
   install:
     runtime-versions:
-      nodejs: 10
+      nodejs: 16
     commands:
       - apt-get install -y curl jq unzip
   pre_build:
     commands:
       - echo "Install npm dependencies"
       - npm install
-
   build:
     commands:
       - echo "Bundle app source"
