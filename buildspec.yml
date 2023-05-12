@@ -23,5 +23,5 @@ phases:
       - echo "Removing previous bundle from S3"
       - aws s3 rm s3://$S3_BUCKET  --recursive
       - echo "Upload build folder to S3"
-      - aws s3 sync build/ s3://$S3_BUCKET --exclude "*.svg"
-      - aws s3 sync build/ s3://$S3_BUCKET --include "*.svg" --content-type image/svg+xml
+      - aws s3 sync ./build s3://$S3_BUCKET --exclude "*.svg"
+      - aws s3 sync ./build s3://$S3_BUCKET --include "*.svg" --content-type image/svg+xml
