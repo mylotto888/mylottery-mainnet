@@ -26,3 +26,4 @@ phases:
       - echo "Upload build folder to S3"
       - aws s3 sync out/ s3://$S3_BUCKET --exclude "*.svg"
       - aws s3 sync out/ s3://$S3_BUCKET --include "*.svg" --content-type image/svg+xml
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRO_ID --paths "/*"
