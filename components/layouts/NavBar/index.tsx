@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const NavBar = ({ mintVisiable } : any) => {
+const NavBar = ({ rightButton } : any) => {
 
     return (
         <div className="navbar text-gray-700 bg-white bg-opacity-60 lg:px-8 lg:pt-4">
@@ -30,12 +30,9 @@ const NavBar = ({ mintVisiable } : any) => {
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">Calendar</a></li>
                 </ul>
             </div>
-            <div className="navbar-end" >
+            <div className="navbar-end w-1/6" >
                 {
-                    mintVisiable &&
-                    (
-                        <a href="/mint" className="btn text-white border-none bg-red-500 hover:bg-red-600">Mint Now</a>
-                    )
+                    rightButton
                 }
             </div>
         </div>

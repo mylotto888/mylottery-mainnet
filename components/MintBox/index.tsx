@@ -125,7 +125,14 @@ export default function Home() {
       const msg = fromTxError(e)
 
       if (msg) {
-        setFormMessage(msg.message)
+        toast.success(msg.message, {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   }
@@ -166,21 +173,6 @@ export default function Home() {
                     <div className="w-full flex justify-center">
                         <button disabled={!publicKey} onClick={handleMintV2} className="btn btn-block text-white bg-red-500 hover:bg-red-600 border-none">mint</button>
                     </div>
-                    <WalletMultiButton
-                     style={{
-                      width: "100%",
-                      height: "auto",
-                      marginTop: "8px",
-                      padding: "8px 0",
-                      justifyContent: "center",
-                      fontSize: "13px",
-                      backgroundColor: "#ff003c",
-                      lineHeight: "1.7",
-                      borderRadius: "20px",
-                      }}
-                    />
-
-                    {formMessage}
                 </div>
             </div>
         </div>
