@@ -1,5 +1,5 @@
-import Head from "next/head"
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
+//import Head from "next/head"
+//import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import { useEffect, useState } from "react"
 import {
@@ -35,6 +35,7 @@ export default function Home() {
     Sft | SftWithToken | Nft | NftWithToken | null
   >(null)
   const [formMessage, setFormMessage] = useState<string | null>(null)
+  const [mintCount, setMintCount] = useState(1);
 
   useEffect(() => {
     ;(async () => {
@@ -62,6 +63,49 @@ export default function Home() {
       }
     })()
   }, [wallet, connection])
+
+  function updateAmount(qty: number) {
+    setMintCount(qty);
+  }
+
+  function increaseValue(){
+    var numericField = document.querySelector(".mint-qty") as HTMLInputElement;
+    if (numericField) {
+      var value = parseInt(numericField.value);
+      if(!isNaN(value) && value < 10) {
+        value++;
+        numericField.value = "" + value;
+        updateAmount(value);
+      }
+    }
+  }
+
+  function decreaseValue(){
+    var numericField = document.querySelector(".mint-qty") as HTMLInputElement;
+    if (numericField) {
+      var value = parseInt(numericField.value);
+      if(!isNaN(value) && value > 1) {
+        value--;
+        numericField.value = "" + value;
+        updateAmount(value);
+      }
+    }
+  }
+
+  function UpdateMintCount(target: any){
+    var value = parseInt(target.value);
+    if(!isNaN(value)){
+      if(value > 10) {
+        value = 10;
+        target.value = "" + value;
+      }
+      else if (value < 1){
+        value = 1;
+        target.value = "" + value;
+      }
+      updateAmount(value);
+    }
+  }
 
   /** Mints NFTs through a Candy Machine using Candy Guards */
   const handleMintV2 = async () => {
@@ -91,7 +135,6 @@ export default function Home() {
         metaplex,
         remainingAccounts
       )
-
       const tx = new Transaction()
 
       if (additionalIxs?.length) {
@@ -125,7 +168,7 @@ export default function Home() {
       const msg = fromTxError(e)
 
       if (msg) {
-        toast.success(msg.message, {
+        toast.warn(msg.message, {
           position: 'top-center',
           autoClose: 3000,
           hideProgressBar: true,
@@ -141,7 +184,7 @@ export default function Home() {
     ? candyMachine.candyGuard?.guards.solPayment
       ? Number(candyMachine.candyGuard?.guards.solPayment?.amount.basisPoints) /
           1e9 +
-        " SOL"
+        " ◎"
       : "Free"
     : "..."
 
@@ -165,11 +208,15 @@ export default function Home() {
                         </div>
                         <div className="py-2 flex item-center">
                             <button className="btn btn-sm bg-white border-none hover:bg-gray-300">
-                                <span className="text-red-500 animate-pulse">END</span>
+                                <span className="text-red-500 animate-pulse">LIVE</span>
                             </button>
                         </div>
                     </div>
-                    
+                    <div className="w-full flex justify-center">
+                    <button onClick={() => decreaseValue()} className="btn text-white bg-red-500 hover:bg-red-600 border-none">-</button>
+                    <input className="mint-qty text-center w-10" onChange={(e) => UpdateMintCount(e.target as any)} value={mintCount}></input>
+                    <button onClick={() => increaseValue()} className="btn text-white bg-red-500 hover:bg-red-600 border-none">+</button>
+                    </div>
                     <div className="w-full flex justify-center">
                         <button disabled={!publicKey} onClick={handleMintV2} className="btn btn-block text-white bg-red-500 hover:bg-red-600 border-none">mint</button>
                     </div>
