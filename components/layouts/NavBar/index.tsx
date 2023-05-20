@@ -30,7 +30,7 @@ const NavBar = ({ rightButton } : any) => {
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">Calendar</a></li>
                 </ul>
             </div>
-            <div className="navbar-end w-1/6" >
+            <div className="navbar-end" >
                 {
                     rightButton
                 }
