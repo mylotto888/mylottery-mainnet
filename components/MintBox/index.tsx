@@ -213,9 +213,9 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="w-full flex justify-center">
-                    <button onClick={() => decreaseValue()} className="btn text-white bg-red-500 hover:bg-red-600 border-none">-</button>
+                    <button onClick={() => decreaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">-</button>
                     <input className="mint-qty text-center w-10" onChange={(e) => UpdateMintCount(e.target as any)} value={mintCount}></input>
-                    <button onClick={() => increaseValue()} className="btn text-white bg-red-500 hover:bg-red-600 border-none">+</button>
+                    <button onClick={() => increaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">+</button>
                     </div>
                     <div className="w-full flex justify-center">
                         <button disabled={!publicKey} onClick={handleMintV2} className="btn btn-block text-white bg-red-500 hover:bg-red-600 border-none">mint</button>
