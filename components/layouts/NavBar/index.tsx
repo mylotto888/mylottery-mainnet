@@ -18,7 +18,7 @@ const NavBar = ({ rightButton } : any) => {
                 </ul>
                 </div>
                 <Link href={"/"} className="normal-case text-xl">
-                    <img src="/logo192.png" className="w-32" />
+                    <img src="/images/logo192.png" className="w-32" />
                 </Link>
             </div>
             <div className="navbar-center px-5 hidden lg:flex">

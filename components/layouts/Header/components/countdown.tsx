@@ -1,23 +1,30 @@
-import { useEffect, useState } from "react";
+import { useTranslation } from "@/app/i18n";
+import moment from "moment";
+import { FC, useEffect, useState } from "react";
+import { couldStartTrivia } from "typescript";
 
-const CountDown = ({date} : any)=> {
+const CountDown = ({date, translate} : any) => {
 
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-
+ 
     useEffect( () => {
+        let targetDate = moment(date);
+        let todayDate = moment();
+        let interval: any = null;
 
-        const interval = setInterval(() => {
+        if(targetDate.isBefore(todayDate)){
+            interval = setInterval(() => {
             const now = new Date().getTime();
             const distance = date.getTime() - now;
-      
+        
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
+        
             setCountdown({ days, hours, minutes, seconds });
-          }, 1000);
+            }, 1000);
+        }
       
         return () => clearInterval(interval);
         
@@ -32,7 +39,7 @@ const CountDown = ({date} : any)=> {
                         { countdown.days }
                     </span>
                     </span>
-                    days
+                    { translate('days') }
                 </div> 
                 <div className="flex flex-col">
                     <span className="countdown lg:text-7xl text-4xl">
@@ -40,7 +47,7 @@ const CountDown = ({date} : any)=> {
                         { countdown.hours }
                     </span>
                     </span>
-                    hours
+                    { translate('hours') }
                 </div> 
                 <div className="flex flex-col">
                     <span className="countdown lg:text-7xl text-4xl">
@@ -48,7 +55,7 @@ const CountDown = ({date} : any)=> {
                         { countdown.minutes }
                     </span>
                     </span>
-                    min
+                    { translate('min') }
                 </div> 
                 <div className="flex flex-col">
                     <span className="countdown lg:text-7xl text-4xl">
@@ -56,7 +63,7 @@ const CountDown = ({date} : any)=> {
                         { countdown.seconds }
                     </span>
                     </span>
-                    sec
+                    { translate('sec') }
                 </div>
             </div>
         </div>
