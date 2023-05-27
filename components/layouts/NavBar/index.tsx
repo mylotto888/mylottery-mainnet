@@ -26,7 +26,7 @@ const NavBar = ({ rightButton } : any) => {
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">2D</a></li>
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">3D</a></li>
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">QuickCash</a></li>
-                    <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">Roadmap</a></li>
+                    <li className="bg-transparent"><Link target="blank" href="https://litepaper.mylottery.pro/" className="hover:bg-transparent hover:text-red-600">Litepaper</Link></li>
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">Calendar</a></li>
                     <li className="bg-transparent px-2 text-sm">
                         <Link className="bg-transparent p-0 text-gray-500 hover:text-gray-800" href={'/mm'}>MM</Link>
