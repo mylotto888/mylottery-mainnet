@@ -12,7 +12,7 @@ const CountDown = ({date, translate} : any) => {
         let todayDate = moment();
         let interval: any = null;
 
-        if(targetDate.isBefore(todayDate)){
+        if(targetDate.isAfter(todayDate)){
             interval = setInterval(() => {
             const now = new Date().getTime();
             const distance = date.getTime() - now;

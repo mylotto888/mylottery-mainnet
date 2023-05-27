@@ -200,7 +200,7 @@ export default function MintBox({ translate }: any) {
 
   const cost = candyMachine
     ? candyMachine.candyGuard?.guards.solPayment
-      ?  mintCount * ((Number(candyMachine.candyGuard?.guards.solPayment?.amount.basisPoints) / 1e9) + 0.012)
+      ?  mintCount * ((Number(candyMachine.candyGuard?.guards.solPayment?.amount.basisPoints) / 1e9))
       : "Free"
     : "..."
 
@@ -236,18 +236,18 @@ export default function MintBox({ translate }: any) {
                             </button>
                         </div>
                     </div>
-                    <div className="w-full flex justify-center">
+                    {/* <div className="w-full flex justify-center"> */}
                     {/* <button onClick={() => decreaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">-</button> */}
                     {/* <input disabled className="mint-qty disabled focus:outline-none focus:border-none text-center w-10" onChange={(e) => UpdateMintCount(e.target as any)} value={mintCount}></input> */}
                     {/* <button onClick={() => increaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">+</button> */}
-                    </div>
+                    {/* </div> */}
                     <div className="w-full flex justify-center">
                         <button disabled={!publicKey && !isBetweenStartDateEndDate} onClick={handleMintV2} className="btn btn-block text-white bg-red-500 hover:bg-red-600 border-none">
                           { translate('mint') }
                         </button>
                     </div>
                     <div>
-                      Total estimated cost (Solana fees included): {cost} SOL
+                      Total estimated cost (Solana fees included): {Number(cost) + 0.012} SOL
                     </div>
                 </div>
             </div>

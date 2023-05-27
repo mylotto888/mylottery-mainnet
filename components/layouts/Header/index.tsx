@@ -19,7 +19,7 @@ const Header = ({ translate } : any) => {
             <HeaderText translate={translate} />
             <CountDown
                 translate={translate}
-                date={moment('2023-05-22T06:30:30').tz('Asia/Yangon').toDate()}
+                date={moment('2023-06-05T06:30:30').tz('Asia/Yangon').toDate()}
             />
             <hr className="h-1 my-4 rounded-full bg-gradient-to-r from-red-500 to-pink-500 animate-pulse" />
         </div>
