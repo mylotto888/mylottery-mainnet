@@ -15,7 +15,7 @@ const Header = ({ translate } : any) => {
 
 
     return (
-        <div id="header" style={headerBgStyle} className="text-gray-800 w-screen">
+        <div id="header" style={headerBgStyle} className="text-gray-800 max-w-full">
             <HeaderText translate={translate} />
             <CountDown
                 translate={translate}

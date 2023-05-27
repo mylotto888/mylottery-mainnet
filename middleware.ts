@@ -9,12 +9,11 @@ export const config = {
   matcher: ['/((?!api|_next/static|_next/image|images|assets|favicon.ico|sw.js).*)']
 }
 
-console.log({ config })
 const cookieName = 'i18next'
 
-export function middleware(req: NextRequest) {
+export function middleware(req: NextRequest | any) {
   if (req.nextUrl.pathname.indexOf('icon') > -1 || req.nextUrl.pathname.indexOf('chrome') > -1) return NextResponse.next()
-  let lng: string
+  let lng: string | any
   if (req.cookies.has(cookieName)) lng = acceptLanguage.get(req.cookies.get(cookieName).value)
   if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'))
   if (!lng) lng = fallbackLng

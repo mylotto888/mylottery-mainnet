@@ -31,7 +31,7 @@ const CountDown = ({date, translate} : any) => {
     }, [date])
 
     return (
-        <div className="w-screen flex justify-center py-8 px-9">
+        <div className="w-full flex justify-center py-8 px-9">
             <div className="grid grid-flow-col gap-10 text-center auto-cols-max">
                 <div className="flex flex-col">
                     <span className="countdown lg:text-7xl text-4xl">

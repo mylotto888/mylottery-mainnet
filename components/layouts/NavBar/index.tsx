@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const NavBar = ({ rightButton } : any) => {
+const NavBar = ({ rightButton, lng } : any) => {
 
     return (
         <div className="navbar text-gray-700 bg-white bg-opacity-60 lg:px-8 lg:pt-4">
@@ -29,9 +29,9 @@ const NavBar = ({ rightButton } : any) => {
                     <li className="bg-transparent"><Link target="blank" href="https://litepaper.mylottery.pro/" className="hover:bg-transparent hover:text-red-600">Litepaper</Link></li>
                     <li className="btn-disabled bg-transparent"><a href="#" className="hover:bg-transparent hover:text-red-600">Calendar</a></li>
                     <li className="bg-transparent px-2 text-sm">
-                        <Link className="bg-transparent p-0 text-gray-500 hover:text-gray-800" href={'/mm'}>MM</Link>
+                        <Link className={`bg-transparent p-0 ${ lng === 'mm' ? 'text-gray-800' : 'text-gray-500' } hover:text-gray-800`} href={'/mm'}>MM</Link>
                         <span className="px-1 bg-transparent">|</span>
-                        <Link className="bg-transparent p-0 text-gray-500 hover:text-gray-800" href={'/en'}>EN</Link>
+                        <Link className={`bg-transparent p-0 ${ lng === 'en' ? 'text-gray-800' : 'text-gray-500' } hover:text-gray-800`} href={'/en'}>EN</Link>
                     </li>
                 </ul>
             </div>

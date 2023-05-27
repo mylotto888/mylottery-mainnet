@@ -1,6 +1,6 @@
 //import Head from "next/head"
 //import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
-import { useConnection, useWallet } from "@solana/wallet-adapter-react"
+import { Wallet, useConnection, useWallet } from "@solana/wallet-adapter-react"
 import { useEffect, useState } from "react"
 import {
   CandyMachine,
@@ -11,6 +11,7 @@ import {
   Sft,
   SftWithToken,
   walletAdapterIdentity,
+  toDateTime
 } from "@metaplex-foundation/js"
 import { Keypair, Transaction } from "@solana/web3.js"
 
@@ -21,10 +22,9 @@ import {
 import { fromTxError } from "@/utils/errors"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import moment from "moment"
 
-
-
-export default function Home() {
+export default function MintBox({ translate }: any) {
   const wallet = useWallet()
   const { publicKey } = wallet
   // console.log(publicKey)
@@ -36,6 +36,16 @@ export default function Home() {
   >(null)
   const [formMessage, setFormMessage] = useState<string | null>(null)
   const [mintCount, setMintCount] = useState(1);
+  const maxMintItems = 10;
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [nftStatus, setNftStatus] = useState('Soon')
+
+  
+  let today = moment();
+  let isBetweenStartDateEndDate = today.isAfter(moment(startDate)) && today.isBefore(moment(endDate))
+  let isBeforeStareDate = today.isBefore(moment(startDate))
+  let isAfterEndDate = today.isAfter(moment(endDate))
 
   useEffect(() => {
     ;(async () => {
@@ -48,11 +58,19 @@ export default function Home() {
         )
         setMetaplex(metaplex)
 
-        const candyMachine = await metaplex.candyMachines().findByAddress({
+        const candyMachine: CandyMachine = await metaplex.candyMachines().findByAddress({
           address: new PublicKey(process.env.NEXT_PUBLIC_CANDY_MACHINE_ID),
         })
 
         setCandyMachine(candyMachine)
+        let CM_StartDate: any = candyMachine?.candyGuard?.guards?.startDate?.date;
+        let CM_EndDate: any = candyMachine?.candyGuard?.guards?.endDate?.date;
+
+        let start_Date: any | Date = CM_StartDate ? new Date(CM_StartDate * 1000) : ''; 
+        let end_Date: any | Date = CM_EndDate ? new Date(CM_EndDate * 1000) : ''; 
+
+        setStartDate(start_Date)
+        setEndDate(end_Date)
 
         const collection = await metaplex
           .nfts()
@@ -72,7 +90,7 @@ export default function Home() {
     var numericField = document.querySelector(".mint-qty") as HTMLInputElement;
     if (numericField) {
       var value = parseInt(numericField.value);
-      if(!isNaN(value) && value < 10) {
+      if(!isNaN(value) && value < maxMintItems) {
         value++;
         numericField.value = "" + value;
         updateAmount(value);
@@ -108,7 +126,7 @@ export default function Home() {
   }
 
   /** Mints NFTs through a Candy Machine using Candy Guards */
-  const handleMintV2 = async () => {
+    const handleMintV2 = async () => {
     if (!metaplex || !candyMachine || !publicKey || !candyMachine.candyGuard) {
       if (!candyMachine?.candyGuard)
         throw new Error(
@@ -140,7 +158,6 @@ export default function Home() {
       if (additionalIxs?.length) {
         tx.add(...additionalIxs)
       }
-
       tx.add(...instructions)
 
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
@@ -155,7 +172,7 @@ export default function Home() {
         lastValidBlockHeight: latest.lastValidBlockHeight,
         signature: txid,
       }).then( res => {
-          toast.success('Mint Successful!', {
+          toast.success(translate('success-alert'), {
             position: 'top-center',
             autoClose: 3000,
             hideProgressBar: true,
@@ -180,11 +197,10 @@ export default function Home() {
     }
   }
 
+
   const cost = candyMachine
     ? candyMachine.candyGuard?.guards.solPayment
-      ? Number(candyMachine.candyGuard?.guards.solPayment?.amount.basisPoints) /
-          1e9 +
-        " ◎"
+      ?  mintCount * ((Number(candyMachine.candyGuard?.guards.solPayment?.amount.basisPoints) / 1e9) + 0.012)
       : "Free"
     : "..."
 
@@ -206,23 +222,36 @@ export default function Home() {
                             <span className="text-gray-400">Price</span>
                             <span>{cost}</span>
                         </div>
+                        {/* <div className="flex flex-col tracking-wider gap-1">
+                            <span className="text-gray-400">Max</span>
+                            <span>{maxMintItems}</span>
+                        </div> */}
                         <div className="py-2 flex item-center">
                             <button className="btn btn-sm bg-white border-none hover:bg-gray-300">
-                                <span className="text-red-500 animate-pulse">LIVE</span>
+                                <span className="text-red-500 animate-pulse">
+                                  {
+                                    isBetweenStartDateEndDate ? 'Live' : isAfterEndDate ? 'End' : 'Soon'
+                                  }
+                                </span>
                             </button>
                         </div>
                     </div>
                     <div className="w-full flex justify-center">
-                    <button onClick={() => decreaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">-</button>
-                    <input className="mint-qty text-center w-10" onChange={(e) => UpdateMintCount(e.target as any)} value={mintCount}></input>
-                    <button onClick={() => increaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">+</button>
+                    {/* <button onClick={() => decreaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">-</button> */}
+                    {/* <input disabled className="mint-qty disabled focus:outline-none focus:border-none text-center w-10" onChange={(e) => UpdateMintCount(e.target as any)} value={mintCount}></input> */}
+                    {/* <button onClick={() => increaseValue()} className="px-3 rounded-lg text-white bg-red-500 hover:bg-red-600 border-none">+</button> */}
                     </div>
                     <div className="w-full flex justify-center">
-                        <button disabled={!publicKey} onClick={handleMintV2} className="btn btn-block text-white bg-red-500 hover:bg-red-600 border-none">mint</button>
+                        <button disabled={!publicKey && !isBetweenStartDateEndDate} onClick={handleMintV2} className="btn btn-block text-white bg-red-500 hover:bg-red-600 border-none">
+                          { translate('mint') }
+                        </button>
+                    </div>
+                    <div>
+                      Total estimated cost (Solana fees included): {cost} SOL
                     </div>
                 </div>
             </div>
-        </div>
+      </div>
     </>
   )
 }

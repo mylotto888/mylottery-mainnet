@@ -1,10 +1,12 @@
 'use client';
 
+import { useTranslation } from "@/app/i18n";
 import MintBox from "@/components/MintBox";
 import Footer from "@/components/layouts/Footer";
 import NavBar from "@/components/layouts/NavBar";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
 
 const WalletProvider = dynamic(() => import("@/components/WalletProvider"), {
@@ -12,7 +14,12 @@ const WalletProvider = dynamic(() => import("@/components/WalletProvider"), {
   })
   
 
-const Mint = () => {
+export default async function Mint (params : any) {
+    
+
+    const lng = params?.params?.lng || 'en'
+    let { t } = await useTranslation( lng, 'client-page');
+    
     const BgStyle = {
         backgroundImage: 'url(/images/bg.png)',
         backgroundRepeat: 'no-repeat',
@@ -36,14 +43,16 @@ const Mint = () => {
         />
     )
 
+
     return (
         <WalletProvider>
             <div style={BgStyle} className="bg-white h-screen">
                 <NavBar 
+                    lng={lng}
                     rightButton={connectButton}
                 />
                 <div className="">
-                    <MintBox />
+                    <MintBox translate={t} />
                 </div>
                 <Footer />
             </div>
@@ -51,5 +60,3 @@ const Mint = () => {
     )
 }
 
-
-export default Mint;
